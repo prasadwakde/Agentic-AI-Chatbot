@@ -8,13 +8,16 @@ for powershell
 .\AIAgent\Scripts\Activate.ps1
 
 Install the dependencies
-pip install streamlit uvicorn langgraph langchain fastapi pydantic
+pip install streamlit uvicorn langgraph langchain fastapi pydantic pytest
 
 Backend run command
 python -m app.api.main
 
 Frontend run command
 streamlit run app/frontend/streamlit_app.py
+
+Tests run command
+pytest tests/test_chat_api.py
 
 
 # Current Progress Response
