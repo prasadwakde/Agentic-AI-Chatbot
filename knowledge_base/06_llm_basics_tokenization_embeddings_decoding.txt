@@ -1,0 +1,90 @@
+TITLE: LLM Basics – Tokenization, Embeddings, and Decoding
+
+1. Tokens and Tokenization
+
+LLMs do not operate directly on raw characters or words. Instead, they use tokens.
+
+Tokenization:
+- Maps raw text into a sequence of token IDs.
+- Commonly uses subword units (e.g., Byte-Pair Encoding, WordPiece).
+- Example: "tokenization" → ["token", "ization"] → [ID_1, ID_2]
+
+Tokenization has two directions:
+- Encoding: text → tokens (IDs).
+- Decoding: tokens → text.
+
+Token counts matter:
+- Context window is defined in tokens (e.g., 4k, 8k, 128k tokens).
+- Cost and latency scale with number of tokens.
+
+
+2. Embeddings – Vector Representations of Tokens
+
+Each token ID is mapped to a vector (embedding) of fixed dimension (e.g., 1024).
+
+Embedding matrix:
+- Rows correspond to tokens in vocabulary.
+- Columns are embedding dimensions.
+
+When we feed a sequence of tokens:
+- We look up each token’s embedding.
+- Sometimes add positional encodings.
+- These embeddings are the actual numeric inputs to the transformer.
+
+Embeddings capture semantic relationships:
+- Similar tokens have embeddings that are close in vector space.
+
+
+3. Transformer Layers
+
+LLMs are typically stacks of transformer blocks.
+
+Each block typically includes:
+- Self-attention (multi-head).
+- Feedforward network (two linear layers with non-linearity).
+- Residual connections and normalization.
+
+Information flows through many such blocks to progressively refine internal representations.
+
+
+4. Decoding – Generating Text
+
+After processing input tokens, the model outputs logits over the vocabulary for the next token.
+
+Decoding strategies:
+- Greedy decoding:
+    Always pick the highest probability token.
+- Sampling:
+    Sample tokens according to predicted probabilities.
+- Temperature:
+    Adjusts sharpness of distribution (higher temperature → more randomness).
+- Top-k sampling:
+    Sample from the top k most probable tokens.
+- Top-p (nucleus) sampling:
+    Sample from smallest set of tokens whose cumulative probability exceeds p.
+- Beam search:
+    Maintain multiple candidate sequences and score them.
+
+Decoding controls:
+- Trade-off between diversity and coherence.
+- Often a key part of model behaviour tuning.
+
+
+5. Context Window and Attention
+
+LLMs have a fixed maximum context window (e.g., 4k–256k tokens).
+They only “see” tokens within that window.
+
+Implications:
+- Long documents must be truncated or summarized.
+- RAG and other external tools help overcome this limitation by selecting relevant context.
+
+
+6. Parametric vs Non-Parametric Knowledge
+
+LLMs learn parametric knowledge in weights during training.
+They do not know about new data after training unless:
+- Retrained or fine-tuned, or
+- Augmented with retrieval (RAG) or tools (APIs, DBs).
+
+RAG and tools extend the effective knowledge of LLMs beyond the training set.

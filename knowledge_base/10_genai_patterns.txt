@@ -1,0 +1,124 @@
+TITLE: Common GenAI Patterns – Chatbots, Code Assistants, and Evaluation
+
+1. Chatbots (Conversational Assistants)
+
+Pattern:
+- User sends messages; assistant responds in natural language.
+- Often uses:
+    - System prompt defining role and style.
+    - Conversation history as context.
+    - Optional RAG for knowledge grounding.
+    - Optional tools (web search, calendar, etc.).
+
+Key design points:
+- Memory:
+    How much history to keep?
+- Safety:
+    Guardrails, content filters.
+- Personalization:
+    User profiles, preferences.
+
+
+2. Code Assistants
+
+Pattern:
+- LLM helps write, refactor, and explain code.
+- Often integrated into IDEs or web editors.
+
+Components:
+- Context:
+    Open files, project tree, error messages.
+- Tools:
+    - Code search engine.
+    - Test runner.
+    - Linter / static analysis.
+- Specialized prompts:
+    Ask for diffs, explanations, or test cases.
+
+Challenges:
+- Context size (large codebases).
+- Keeping suggestions consistent with project style and constraints.
+- Avoiding subtle bugs or insecure patterns.
+
+
+3. RAG-based Knowledge Assistants
+
+Pattern:
+- LLM + vector database of domain documents.
+- Used for:
+    - Internal company knowledge.
+    - Technical documentation Q&A.
+    - Study or research assistants.
+
+Pipeline:
+- Ingestion (chunk, embed, index).
+- Retrieval (similarity search).
+- Answer generation with citations.
+
+Success factors:
+- High-quality documents.
+- Good chunking and retrieval.
+- Proper prompting to reduce hallucinations.
+
+
+4. Multi-Tool Agents
+
+Pattern:
+- Agent that can decide among multiple tools:
+    - Web search
+    - Retrieval (RAG)
+    - Calculator
+    - Database queries
+    - External APIs
+
+Loop:
+- Observe user query and current state.
+- Decide next action (choose tool or respond).
+- Execute tool and incorporate result.
+- Repeat until done.
+
+Frameworks like LangChain and LangGraph provide abstractions for this type of agent.
+
+
+5. Evaluation of GenAI Systems
+
+Unlike traditional ML, GenAI outputs are often open-ended text.
+Evaluation patterns include:
+
+- Automatic metrics:
+    - BLEU/ROUGE (for text similarity, less used now).
+    - Embedding-based similarity measures.
+    - Task-specific metrics (e.g., accuracy on multiple-choice questions).
+
+- Preference / human-based evaluation:
+    - A/B testing between model variants.
+    - Pairwise comparisons (which answer is better and why).
+
+- LLM-as-a-judge:
+    - Use strong models to rate answers according to criteria like correctness, helpfulness, style.
+    - Useful but must check for bias and robustness.
+
+- RAG-specific evaluation:
+    - Retrieval metrics (recall@k, precision@k).
+    - Groundedness / faithfulness:
+        Does the answer depend on retrieved context or hallucinate?
+
+
+6. System Design Considerations
+
+Across all GenAI patterns, common design questions include:
+- Latency vs quality trade-offs:
+    Model size, number of tool calls.
+- Cost control:
+    Token usage, caching, batching.
+- Safety and robustness:
+    Prompt injection defenses, content filtering, fallback strategies.
+- Observability:
+    Logging prompts, responses, tool calls, and errors to debug behaviour.
+
+These patterns can be combined:
+For example, your AI/ML Study Assistant is:
+- A chatbot.
+- With RAG.
+- With tools (web search, possibly code examples).
+- Potentially evaluated using small test sets or LLM-as-judge metrics.

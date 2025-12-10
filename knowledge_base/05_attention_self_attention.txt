@@ -1,0 +1,75 @@
+TITLE: Attention and Self-Attention
+
+1. Motivation for Attention
+
+In sequence tasks, not all input tokens are equally important for a given output.
+Attention lets the model focus on the most relevant parts of the input dynamically.
+
+Example:
+In translation, a target word typically depends on a subset of source words. Attention scores highlight these dependencies.
+
+
+2. Basic Attention Mechanism
+
+Given:
+- Query vector q
+- A set of key vectors K = {k_i}
+- A set of value vectors V = {v_i}
+
+We compute:
+- Similarity scores between query and each key.
+- Normalize scores into a probability distribution (weights).
+- Weighted sum of values using those weights.
+
+This gives a context vector that aggregates relevant information.
+
+
+3. Scaled Dot-Product Attention (Common in Transformers)
+
+Q: matrix of queries
+K: matrix of keys
+V: matrix of values
+
+Attention(Q, K, V) = softmax( (Q K^T) / sqrt(d_k) ) V
+
+Where:
+- d_k is the dimensionality of keys.
+- Softmax converts raw scores into attention weights.
+
+
+4. Self-Attention
+
+Self-attention is attention where queries, keys, and values come from the same sequence.
+
+For a sequence of token embeddings:
+- Each token can attend to all other tokens in the sequence.
+- This allows modeling relationships between any pair of positions directly.
+
+Benefits:
+- Captures long-range dependencies.
+- Parallelizable across all positions.
+
+
+5. Multi-Head Attention
+
+Instead of a single attention mechanism, transformers use multiple “heads”.
+Each head:
+- Learns its own Q, K, V projections.
+- Can focus on different types of patterns (e.g., syntax vs semantics).
+
+Process:
+1) Compute attention for each head independently.
+2) Concatenate their outputs.
+3) Apply a linear projection to combine them.
+
+This increases the expressiveness of the model.
+
+
+6. Positional Information
+
+Self-attention is permutation-invariant by itself (it does not know about token positions).
+Transformers add positional encodings or embeddings to input token embeddings to provide order information.
+
+These can be:
+- Fixed sinusoidal encodings.
+- Learned positional embeddings.

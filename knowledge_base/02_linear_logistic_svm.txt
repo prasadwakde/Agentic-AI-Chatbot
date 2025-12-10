@@ -1,0 +1,107 @@
+TITLE: Linear Regression, Logistic Regression, and Support Vector Machines (SVMs)
+
+1. Linear Regression
+
+Goal:
+Predict a continuous target y from features x using a linear function.
+
+Model:
+    y_pred = w · x + b
+
+Loss:
+    Mean Squared Error (MSE)
+    L = (1/N) * Σ (y_pred_i – y_i)^2
+
+Training:
+Use gradient descent or closed-form solution (normal equation) to estimate w and b.
+
+Interpretation:
+- Each weight indicates how strongly a feature influences the prediction.
+- Regularization (Ridge, Lasso) can be added to prevent overfitting.
+
+
+2. Logistic Regression (Binary Classification)
+
+Goal:
+Predict a binary label y ∈ {0, 1} from features x.
+
+Model:
+Instead of predicting y directly, logistic regression predicts probability:
+    p = σ(w · x + b)
+where σ is the sigmoid function:
+    σ(z) = 1 / (1 + exp(–z))
+
+Prediction:
+    y_pred = 1 if p ≥ 0.5 else 0
+
+Loss:
+Binary cross-entropy:
+    L = – (1/N) * Σ [y_i * log(p_i) + (1 – y_i) * log(1 – p_i)]
+
+Why “linear”?
+Decision boundary is linear in feature space (w · x + b = 0).
+
+
+3. Multiclass Logistic Regression (Softmax Regression)
+
+For K classes, we compute K linear scores:
+    z_k = w_k · x + b_k
+
+Convert scores to probabilities with softmax:
+    p_k = exp(z_k) / Σ_j exp(z_j)
+
+Loss:
+Cross-entropy across K classes.
+
+
+4. Support Vector Machines (SVM)
+
+Goal:
+Find a decision boundary that maximizes the margin between classes.
+
+Key ideas:
+- Linear SVM tries to find a hyperplane that separates classes with maximum margin.
+- Only a subset of training points (support vectors) affect the position of the boundary.
+
+Hard margin SVM (idealized):
+- Assumes perfect separability.
+- Maximizes margin subject to all points being correctly classified.
+
+Soft margin SVM:
+- Allows misclassifications but penalizes them.
+- Controlled by regularization parameter C (trade-off between margin size and misclassification).
+
+Loss (hinge loss):
+For a sample (x_i, y_i) with y_i ∈ {–1, +1}:
+    L_i = max(0, 1 – y_i * (w · x_i + b))
+
+Objective:
+Minimize regularized hinge loss:
+    J(w) = (1/2) ||w||^2 + C * Σ L_i
+
+
+5. Kernel Trick (Non-linear SVM)
+
+Some datasets are not linearly separable in original feature space.
+Idea: map data into a higher-dimensional feature space where separation is easier.
+
+Kernel function k(x_i, x_j) implicitly defines an inner product in feature space without computing the mapping explicitly.
+
+Common kernels:
+- Linear
+- Polynomial
+- RBF (Gaussian)
+
+Advantages:
+- Can model non-linear boundaries.
+- Still relies on maximum-margin principle.
+
+
+6. When to Use What?
+
+- Linear regression:
+    Continuous targets, linear relationships.
+- Logistic regression:
+    Binary or multiclass classification, interpretability, strong baseline.
+- SVM:
+    Margin-based classification, especially effective in medium-sized datasets with clear margins.

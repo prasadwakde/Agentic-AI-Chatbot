@@ -1,0 +1,67 @@
+TITLE: CNNs, RNNs, and Transformers – High-Level Overview
+
+1. Convolutional Neural Networks (CNNs)
+
+Use case:
+Primarily used for grid-structured data such as images, but also for audio and text.
+
+Key idea:
+Use convolutional layers that apply small filters (kernels) across the input to detect local patterns (edges, textures, shapes).
+
+Components:
+- Convolutional layers:
+    Learn feature maps by sliding filters over input.
+- Pooling layers:
+    Downsample feature maps (e.g., max pooling).
+- Fully connected layers:
+    Use high-level features for classification or regression.
+
+Strengths:
+- Parameter sharing and locality:
+    Fewer parameters than fully connected networks on images.
+- Translation invariance:
+    Local patterns detected regardless of position in the image.
+
+
+2. Recurrent Neural Networks (RNNs)
+
+Use case:
+Sequential data such as time series, text, speech.
+
+Key idea:
+Hidden state that carries information forward across time steps.
+
+Basic recurrence:
+    h_t = f(W_x x_t + W_h h_(t−1) + b)
+    y_t = g(W_y h_t + c)
+
+Limitations:
+- Vanilla RNNs suffer from vanishing/exploding gradients on long sequences.
+- Hard to learn long-range dependencies.
+
+Improvements:
+- LSTM (Long Short-Term Memory) units.
+- GRU (Gated Recurrent Unit).
+They use gating mechanisms to better preserve information over long sequences.
+
+
+3. Transformers (High-Level)
+
+Use case:
+Sequences of tokens (text, code, audio tokens, etc.), especially long-range dependencies.
+
+Key idea:
+Replace recurrence with self-attention mechanisms that can directly relate any two positions in the sequence.
+
+High-level structure:
+- Input embedding + positional encoding.
+- Stacked transformer blocks:
+    Each block has multi-head self-attention and feedforward layers, plus residual connections and normalization.
+- Output layer projects to vocab logits for language tasks.
+
+Benefits:
+- Parallelizable across sequence positions (no recurrent chain).
+- Handles long-range dependencies more effectively.
+- Scales well with data and compute.
+
+Transformers are now the dominant architecture for large language models (LLMs), vision transformers (ViTs), and many multi-modal models.

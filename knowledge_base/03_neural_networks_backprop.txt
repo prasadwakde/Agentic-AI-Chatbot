@@ -1,0 +1,96 @@
+TITLE: Neural Networks and Backpropagation
+
+1. Feedforward Neural Networks
+
+A neural network is a composition of layers of units (neurons) that apply linear transformations followed by non-linear activation functions.
+
+For a simple network:
+- Input layer: features x
+- Hidden layers: h^(1), h^(2), ...
+- Output layer: ŷ
+
+Example for one hidden layer:
+    h = σ(W1 x + b1)
+    ŷ = f(W2 h + b2)
+
+Here, W1, W2 are weight matrices, b1, b2 are biases, σ is an activation function (e.g., ReLU, tanh), and f is output activation (e.g., linear for regression, softmax for classification).
+
+
+2. Activation Functions
+
+Purpose:
+Introduce non-linearity so the network can approximate complex functions.
+
+Common activations:
+- ReLU: max(0, z)
+- Sigmoid: 1 / (1 + exp(–z))
+- Tanh: (exp(z) – exp(–z)) / (exp(z) + exp(–z))
+- Variants: Leaky ReLU, GELU, etc.
+
+
+3. Forward Pass and Loss
+
+Forward pass:
+- Data flows from input through each layer to output.
+- At each layer:
+    z^(l) = W^(l) a^(l–1) + b^(l)
+    a^(l) = activation(z^(l))
+
+Loss:
+Compare predictions ŷ with true labels y using a loss function.
+Examples:
+- Cross-entropy for classification
+- MSE for regression
+
+
+4. Backpropagation: Core Training Algorithm
+
+Backpropagation computes gradients of the loss with respect to all weights and biases efficiently.
+
+High-level steps:
+1) Forward pass:
+   Compute all intermediate activations and final predictions.
+2) Compute loss L.
+3) Backward pass:
+   - Start from derivative of loss with respect to output.
+   - Use chain rule to propagate gradients layer by layer backwards:
+        ∂L/∂W^(l), ∂L/∂b^(l)
+4) Gradient descent step:
+   Update parameters:
+        W^(l) ← W^(l) – η * ∂L/∂W^(l)
+        b^(l) ← b^(l) – η * ∂L/∂b^(l)
+
+Backpropagation reuses intermediate values from the forward pass, which makes gradient computation efficient even for deep networks.
+
+
+5. Vanishing and Exploding Gradients
+
+In deep networks:
+- Gradients can become very small (vanish) or very large (explode) as they propagate through many layers.
+- This makes training unstable or extremely slow.
+
+Mitigation techniques:
+- Better initialization (e.g., He, Xavier).
+- Normalization (BatchNorm, LayerNorm).
+- Residual connections (ResNets).
+- Proper choice of activation functions.
+
+
+6. Training Workflow for Neural Networks
+
+1) Initialize weights (randomly but carefully).
+2) Repeat for many epochs:
+   - Shuffle and split data into mini-batches.
+   - For each batch:
+        a) Forward pass → predictions & loss.
+        b) Backward pass → gradients.
+        c) Update parameters with an optimizer (SGD, Adam, etc.).
+   - Optionally evaluate on validation set.
+3) Stop when validation performance stops improving (early stopping) or after a fixed number of epochs.
+
+
+7. Capacity, Depth, and Expressiveness
+
+- Increasing number of hidden units and layers increases model capacity.
+- A network with at least one hidden layer and non-linear activations can approximate a wide range of functions (universal approximation).
+- More capacity can help but also increases risk of overfitting, so regularization and good data are crucial.

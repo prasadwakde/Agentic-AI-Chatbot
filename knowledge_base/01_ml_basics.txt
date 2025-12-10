@@ -1,0 +1,102 @@
+TITLE: Machine Learning Basics – Supervised, Unsupervised, Loss, Gradient Descent
+
+1. What is Machine Learning?
+
+Machine learning is about learning patterns from data in order to make predictions or decisions without being explicitly programmed for each rule. We define:
+- Inputs (features, x)
+- Outputs (targets, y)
+- A model f(x; θ) with parameters θ
+- A loss function measuring how bad predictions are
+- An optimization algorithm to adjust θ to minimize loss
+
+
+2. Supervised Learning
+
+In supervised learning, each training example comes with an input x and a labeled output y.
+The goal: learn a function f(x) that maps inputs to outputs.
+
+Typical tasks:
+- Regression: y is continuous (e.g., predict house price).
+- Classification: y is discrete (e.g., spam vs. not spam).
+
+Examples:
+- Predict exam marks from study hours (regression).
+- Predict whether an email is spam (classification).
+
+
+3. Unsupervised Learning
+
+In unsupervised learning, we only have inputs x, with no labels y.
+The goal: discover structure or patterns in the data.
+
+Typical tasks:
+- Clustering: group similar data points (e.g., segment customers).
+- Dimensionality reduction: compress high-dimensional data into a smaller representation (e.g., PCA).
+
+Examples:
+- Group customers into segments based on purchase behaviour.
+- Compress image data into a lower-dimensional representation for visualization.
+
+
+4. Loss Functions
+
+The loss (or cost) function measures how far predictions are from the true labels.
+
+Common loss functions:
+- Mean Squared Error (MSE) for regression:
+    L = (1/N) * Σ (y_pred_i – y_i)^2
+- Binary cross-entropy for binary classification:
+    L = – (1/N) * Σ [y_i * log(p_i) + (1 – y_i) * log(1 – p_i)]
+  where p_i is predicted probability of class 1.
+
+The training objective is to find parameters θ that minimize the loss over the training set.
+
+
+5. Gradient Descent – Core Optimization Algorithm
+
+Gradient descent is used to minimize the loss function by iteratively updating parameters in the direction that reduces the loss.
+
+Basic idea:
+- Compute gradient of loss with respect to parameters: ∇_θ L(θ)
+- Update rule:
+    θ_new = θ_old – η * ∇_θ L(θ_old)
+  where η (eta) is the learning rate.
+
+Variants:
+- Batch gradient descent:
+    Uses the whole dataset to compute the gradient per step.
+- Stochastic gradient descent (SGD):
+    Uses a single example at a time; updates more frequently.
+- Mini-batch gradient descent:
+    Uses small batches (e.g., 32, 64 examples); a practical compromise.
+
+Key hyperparameter:
+- Learning rate η:
+    Too large → divergence or oscillation.
+    Too small → slow convergence.
+
+
+6. Training / Validation / Test Split
+
+To evaluate generalization:
+- Training set: used to fit the model.
+- Validation set: used to tune hyperparameters (e.g., learning rate, regularization).
+- Test set: used once at the end to measure final performance.
+
+This separation helps detect overfitting (when the model memorizes training data but performs poorly on new data).
+
+
+7. Overfitting vs Underfitting
+
+- Underfitting:
+    Model is too simple; cannot capture patterns in the data.
+    High error on both train and test.
+- Overfitting:
+    Model is too complex; memorizes training data.
+    Low error on train, high error on test.
+
+Common ways to reduce overfitting:
+- More data
+- Regularization (L2, dropout for NNs)
+- Early stopping
+- Simpler model

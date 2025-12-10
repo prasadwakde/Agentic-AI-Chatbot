@@ -1,0 +1,82 @@
+TITLE: LangGraph Basics – State, Nodes, Edges, and Tools
+
+1. What is LangGraph?
+
+LangGraph is a library (from the LangChain ecosystem) for building stateful, graph-based LLM workflows and agents.
+
+Key idea:
+Represent your application as a graph:
+- Nodes: units of work (LLM calls, tool calls, custom code).
+- Edges: transitions between nodes (fixed or conditional).
+- State: shared data structure passed and updated as the graph runs. :contentReference[oaicite:3]{index=3}
+
+
+2. State
+
+State is a structured object that carries information between nodes.
+It can include:
+- Messages (conversation history).
+- Intermediate tool results.
+- Metadata (user ID, flags, etc.).
+
+Nodes read from and write to this shared state.
+
+
+3. Nodes
+
+A node is typically a Python function that:
+- Takes the current state as input.
+- Produces an updated state (or partial update).
+
+Types of nodes:
+- LLM node: calls an LLM using context and prompts from the state.
+- Tool node: executes tools such as web search, retrieval, or custom APIs.
+- Control node: manages branching or aggregation.
+
+
+4. Edges
+
+Edges connect nodes and define control flow.
+
+Types:
+- Normal edges:
+    Always go from one node to another (fixed sequence).
+- Conditional edges:
+    Choose the next node based on the state (e.g., if the LLM requested a tool call, go to tool node; otherwise, end). :contentReference[oaicite:4]{index=4}
+
+Conditional edges are powerful for building agents that decide their next steps dynamically.
+
+
+5. Building an Agent with LangGraph (High-Level Steps)
+
+Typical steps:
+1) Define the state schema.
+2) Define tools.
+3) Define LLM node(s).
+4) Define tool node(s).
+5) Define logic that decides when to call tools and when to stop.
+6) Use StateGraph to connect nodes and edges.
+7) Compile the graph into a runnable agent.
+
+This allows complex flows such as:
+- Loops (e.g., repeatedly call tools until some condition).
+- Branches (e.g., different paths depending on user input).
+- Multi-step workflows with persistent state. :contentReference[oaicite:5]{index=5}
+
+
+6. Tools and Integration with LangChain
+
+LangGraph agents often reuse:
+- LangChain LLM wrappers.
+- LangChain tools and retrievers.
+
+You can use LangGraph alone or together with LangChain:
+- LangChain: primitives (chains, tools, retrievers).
+- LangGraph: higher-level control flow and stateful orchestration.
+
+
+7. Advantages of LangGraph
+
+- Explicit, debuggable control flow (graphs instead of opaque loops).
+- Built-in support for persistence and streaming.
+- Good fit for complex multi-step agents and workflows (e.g., customer support bots, research agents).

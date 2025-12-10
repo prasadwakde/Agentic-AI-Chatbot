@@ -1,0 +1,82 @@
+TITLE: LangChain Basics – Chains, Tools, and Agents
+
+1. What is LangChain?
+
+LangChain is a framework for building LLM-powered applications.
+It focuses on:
+- Composing LLM calls with other components (tools, memory, retrieval, etc.).
+- Providing abstractions to build chatbots, RAG systems, and agents.
+
+
+2. Chains
+
+A chain is a sequence (or directed graph) of steps that process inputs using LLMs and other components.
+
+Examples:
+- PromptTemplate → LLM → OutputParser
+- Retrieval → LLM → Answer
+
+Chains help organize logic, making it easier to reuse and test components.
+
+
+3. Tools
+
+Tools are functions that the model can call to perform actions in the outside world, such as:
+- Web search
+- Database queries
+- File operations
+- Code execution
+
+In LangChain:
+- A tool typically wraps a Python function and describes its input schema.
+- Tools extend the capabilities of the LLM beyond text-only reasoning. :contentReference[oaicite:1]{index=1}
+
+
+4. Agents
+
+Agents use an LLM to decide:
+- Which tool(s) to call
+- In what order
+- When to stop and respond
+
+Typical loop:
+1) User query → agent.
+2) LLM decides next action:
+   - Use a tool (“call web_search with query …”), or
+   - Provide final answer.
+3) If a tool is called:
+   - Tool executes and returns observation.
+   - Observation is fed back into the agent.
+4) Repeat until a final answer is produced.
+
+Agents enable dynamic decision-making: the chain is not fixed ahead of time but constructed step-by-step by the LLM. :contentReference[oaicite:2]{index=2}
+
+
+5. Memory
+
+Memory components store conversational state across turns.
+They allow:
+- Incorporating previous user messages into the context.
+- Maintaining long-running interactions.
+
+
+6. RAG in LangChain
+
+LangChain includes integrations for:
+- Vector stores (Chroma, FAISS, Qdrant, etc.).
+- Embedding models.
+
+Typical RAG chain:
+- Retriever (vector store) → LLM with context.
+
+An agent can combine:
+- Retrieval tools.
+- Web search tools.
+- Domain-specific tools (e.g., calculator, SQL database).
+
+
+7. Why LangChain?
+
+- Standardized abstractions over LLMs, tools, and workflows.
+- Integrations with many providers and databases.
+- Good starting point for building complex LLM apps.

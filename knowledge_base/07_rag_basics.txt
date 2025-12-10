@@ -1,0 +1,91 @@
+TITLE: Retrieval-Augmented Generation (RAG) – Basics
+
+1. Motivation
+
+LLMs:
+- Are trained on large, general corpora.
+- Can hallucinate or lack domain-specific, private, or very recent knowledge.
+
+RAG augments LLMs with an external knowledge source so that the model can ground its answers in retrieved documents rather than only relying on parametric memory.
+
+
+2. Core Idea
+
+RAG pipeline:
+
+1) User query q.
+2) Encode q into an embedding vector.
+3) Retrieve top-k relevant documents or chunks from a knowledge base using vector search or another retrieval method.
+4) Construct a prompt that includes:
+   - The original query.
+   - The retrieved context.
+5) Send this augmented prompt to the LLM to generate an answer.
+6) Optionally return citations or references to the user.
+
+The LLM remains unchanged; only the retrieval and prompting logic are added on top.
+
+
+3. Knowledge Bases and Indexing
+
+Knowledge base:
+- Collection of documents (text, PDFs, etc.) relevant to a domain.
+
+Indexing steps:
+- Preprocess documents (cleaning, splitting into chunks).
+- Embed each chunk using an embedding model.
+- Store vectors and metadata in a vector database (e.g., Chroma, Qdrant, FAISS).
+
+Metadata might include:
+- Document ID, title, URL.
+- Section headings.
+- Timestamps or version info.
+
+
+4. Chunking
+
+Why chunk?
+- Long documents exceed context window.
+- Retrieval works better on reasonably sized chunks.
+
+Typical strategy:
+- Fixed-size character or token chunks (e.g., 500–1000 tokens).
+- Overlap between chunks (e.g., 50–200 tokens) to preserve context around boundaries.
+
+
+5. Embeddings and Similarity Search
+
+Embeddings:
+- Convert text chunks and queries into vectors.
+
+Similarity:
+- Use distance metrics (cosine similarity, inner product, etc.) to find nearest neighbours in the embedding space.
+
+Vector database:
+- Stores vectors and supports efficient nearest-neighbour search.
+- Often supports filtering by metadata.
+
+
+6. Prompting Pattern
+
+A common RAG prompt pattern:
+
+- System / instruction:
+    You are a helpful assistant. Use the provided context to answer.
+- Context:
+    One or more retrieved chunks.
+- User question:
+    The original query.
+
+The model is instructed not to make up facts if context is insufficient.
+
+
+7. Benefits of RAG
+
+- More factual answers.
+- Easy to update knowledge by changing documents in the index.
+- Good fit for:
+    - Internal company knowledge.
+    - Technical documentation.
+    - Personal notes (like your AI/ML study notes).
+
+RAG is a design pattern, not a specific model: many frameworks (LangChain, LlamaIndex, etc.) implement RAG workflows.
