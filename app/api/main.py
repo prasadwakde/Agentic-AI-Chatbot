@@ -1,11 +1,25 @@
+from dotenv import load_dotenv
+load_dotenv()
+
+from pathlib import Path
 from fastapi import FastAPI, HTTPException, status
 from app.api.schemas import RequestState
 from app.agents.langgraph_agent import response_from_ai_agent
+from app.api.routes_docs import router as docs_router
+from app.rag.rag_service import bootstrap_global_kb
 
 # Free models
 ALLOWED_MODEL_NAMES=["llama3-70b-8192", "llama-3.3-70b-versatile", "gpt-4o-mini"]
 
 app = FastAPI(title="LangGraph AI Agent")
+app.include_router(docs_router)
+
+@app.on_event("startup")
+def load_knowledge_base():
+    project_root = Path(__file__).resolve().parents[2]
+    kb_path = project_root / "knowledge_base"
+    bootstrap_global_kb(str(kb_path))
+
 
 @app.get("/health")
 async def health_check():
@@ -38,7 +52,7 @@ def chat_endpoint(request: RequestState):
     except Exception as exc:
         msg = str(exc)
         if "tool_use_failed" in msg or "tavily" in msg.lower():
-            # Fallback method- retrying without web search
+            # Fallback by retrying without web search
             try:
                 response_text = response_from_ai_agent(
                     model_name=request.model_name,
@@ -55,7 +69,7 @@ def chat_endpoint(request: RequestState):
         else:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Unexpected error in AI agent.",
+                detail=f"Unexpected error in AI agent: {msg}",
             )
         
     #response = response_from_ai_agent(llm_id, query, allow_search, system_prompt, provider)

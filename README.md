@@ -81,9 +81,12 @@ python -m venv AIAgent
 ### 3️⃣ Install dependencies
 
 ```bash
-pip install streamlit uvicorn langgraph langchain fastapi pydantic pytest
+pip install streamlit uvicorn fastapi pydantic pytest python-multipart sqlalchemy
 ```
 
+```bash
+pip install -U langgraph langchain langchain-core langchain-community langchain-text-splitters langchain-huggingface chromadb sentence-transformers
+```
 ---
 
 ## ▶️ Running the Project

@@ -2,14 +2,62 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+import re
 import streamlit as st
 import requests
+
+LATEX_BLOCK = re.compile(r"\$\$(.*?)\$\$", re.DOTALL)
+
+def render_answer(answer: str):
+    answer = normalize_latex(answer)
+    parts = LATEX_BLOCK.split(answer)
+
+    for i, part in enumerate(parts):
+        if i % 2 == 0:
+            if part.strip():
+                st.markdown(part)
+        else:
+            st.latex(part.strip())
+
+def normalize_latex(text: str) -> str:
+    text = text.replace("\\[", "$$").replace("\\]", "$$")
+    return text
 
 st.set_page_config(page_title="Langagraph Agent UI", layout="centered")
 st.title("AI Chatbot Agent")
 st.write("Create and Interact with the AI Agent")
 
-SYSTEM_PROMPT_DEFAULT = "Act as an AI chatbot who is smart and friendly."
+st.sidebar.title("📄 Your Documents")
+
+uploaded = st.sidebar.file_uploader("Upload a TXT file", type=["txt"])
+
+if uploaded:
+    resp = requests.post(
+        "http://localhost:9999/docs/upload",
+        data={"user_id": "user123"},
+        files={"file": uploaded}
+    )
+    st.sidebar.success(f"Uploaded! Chunked into {resp.json()['chunks']} pieces.")
+
+
+SYSTEM_PROMPT_DEFAULT = """
+You are an AI/ML Study Assistant.
+
+CRITICAL RULE:
+For AI/ML, DL, LLM, Transformers, LangChain, LangGraph, RAG questions:
+- Always call rag_search first and keep [SOURCE: ...] tags.
+Answer in Markdown and end with a Sources section.
+
+MATH FORMATTING RULES (MANDATORY):
+- Do NOT use Unicode math symbols like θ, ∇, η in plain text equations.
+- Write ALL equations ONLY in LaTeX.
+- Put every standalone equation inside a display block using $$ ... $$.
+Example:
+$$
+\\theta_{\\text{new}} = \\theta_{\\text{old}} - \\eta \\cdot \\nabla_\\theta L(\\theta_{\\text{old}})
+$$
+""".strip()
+
 
 system_prompt = st.text_area(
     "Define your AI Agent: ",
@@ -56,7 +104,7 @@ if st.button("Ask Agent!"):
             "model_provider": provider,
             "system_prompt": system_prompt,
             "messages": [user_query],
-            "allow_search": allow_web_search
+            "allow_search": allow_search_final
         }
 
         try:
@@ -72,9 +120,16 @@ if st.button("Ask Agent!"):
                 st.error(f"Backend error: {detail}")
             else:
                 data = resp.json()
-                answer = data.get("answer") or data
-                st.subheader("Agent Response")
-                st.markdown(f"{answer}")
+                answer = data.get("answer")
+                if answer is None:
+                    st.error(f"Unexpected backend response: {data}")
+                elif answer.strip() == "":
+                    st.warning("Backend returned an empty answer. Showing raw response for debugging:")
+                    st.code(data)
+                else:
+                    st.subheader("Agent Response")
+                    #st.markdown(answer, unsafe_allow_html=False)
+                    render_answer(answer)
 
     else:
         st.warning("Please enter a query first")
