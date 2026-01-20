@@ -17,7 +17,7 @@ Future stages will add RAG, memory, multi-tool agents, streaming responses, and 
 ---
 
 
-## Features (Current – Stage 1)
+## Features (Stage 1)
 
 ### ✅ Core Features
 
@@ -135,14 +135,14 @@ pytest tests/test_chat_api.py
 }
 ```
 
-## Upcoming Milestones
-
-### **Stage 2 — RAG (Retrieval-Augmented Generation)**
+### **Current Stage 2 — RAG (Retrieval-Augmented Generation)**
 
 * Document ingestion
 * Embeddings & vector DB (Chroma)
 * RAG search tool inside LangGraph
 * “AI/ML Study Assistant” local knowledge base
+
+## Upcoming Milestones
 
 ### **Stage 3 — Memory + Multi-Tool Agents**
 
