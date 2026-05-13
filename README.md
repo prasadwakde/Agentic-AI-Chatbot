@@ -1,11 +1,12 @@
 
 ---
 
-# Agentic AI Chatbot (FastAPI, LangGraph, Groq/OpenAI, Streamlit)
+# AgentFlow AI — LangGraph RAG Agent
 
-A modular, production-ready **Agentic AI Chatbot** built using **LangGraph**, **FastAPI**, **Groq/OpenAI LLMs**, and **Streamlit**.
+A modular GenAI application built with LangGraph, FastAPI, Groq/OpenAI models, Chroma, and Streamlit. The project includes a ReAct-style agent, provider selection, optional Tavily web search, document ingestion, vector retrieval, and a local AI/ML study assistant knowledge base.
+
 This project is currently at **Stage 3** of development, featuring a clean architecture, API routing, configurable LLM provider selection, and a fully functional frontend UI.
-
+Designed for extensions such as memory, user profiles, streaming, and deployment workflows.
 Future stages will add multi-tool agents, streaming responses, and deployment workflows.
 
 ---
