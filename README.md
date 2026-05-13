@@ -4,9 +4,9 @@
 # Agentic AI Chatbot (FastAPI, LangGraph, Groq/OpenAI, Streamlit)
 
 A modular, production-ready **Agentic AI Chatbot** built using **LangGraph**, **FastAPI**, **Groq/OpenAI LLMs**, and **Streamlit**.
-This project is currently at **Stage 1** of development, featuring a clean architecture, API routing, configurable LLM provider selection, and a fully functional frontend UI.
+This project is currently at **Stage 3** of development, featuring a clean architecture, API routing, configurable LLM provider selection, and a fully functional frontend UI.
 
-Future stages will add RAG, memory, multi-tool agents, streaming responses, and deployment workflows.
+Future stages will add multi-tool agents, streaming responses, and deployment workflows.
 
 ---
 
@@ -135,19 +135,19 @@ pytest tests/test_chat_api.py
 }
 ```
 
-### **Current Stage 2 — RAG (Retrieval-Augmented Generation)**
+### **Stage 2 — RAG (Retrieval-Augmented Generation)**
 
 * Document ingestion
 * Embeddings & vector DB (Chroma)
 * RAG search tool inside LangGraph
 * “AI/ML Study Assistant” local knowledge base
 
-## Upcoming Milestones
-
-### **Stage 3 — Memory + Multi-Tool Agents**
+### **Current Stage 3 — Memory + Multi-Tool Agents**
 
 * Persistent conversation memory
 * Additional tools (todo management, code tools)
+
+## Upcoming Milestones
 
 ### **Stage 4 — Streaming + Auth + Logging**
 
